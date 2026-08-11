@@ -1,0 +1,11 @@
+{
+  "name": "sj-collection-hub",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync:excel": "node scripts/sync-excel-data.mjs"
+  },
+  "dependencies": {
+    "xlsx": "0.18.5"
+  }
+}

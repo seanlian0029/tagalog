@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>SJ Collection Admin</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview"><img src="logo.png" alt="" /><span>SJ Admin<small>Collection Manager</small></span></a>
+      <nav aria-label="Admin sections">
+        <button class="nav-item active" data-view="overview">Overview</button>
+        <button class="nav-item" data-view="pins">PINs</button>
+        <button class="nav-item" data-view="database">Database</button>
+        <button class="nav-item" data-view="analytics">Analytics</button>
+        <button class="nav-item" data-view="backups">Backups</button>
+        <button class="nav-item" data-view="help">Help</button>
+      </nav>
+      <div class="sidebar-foot"><span class="status-dot"></span><span id="connectionLabel">Checking secure service…</span></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-button" id="menuButton" aria-label="Open menu">☰</button>
+        <div><p class="eyebrow">SJ'S COLLECTION HUB</p><h1 id="pageTitle">Overview</h1></div>
+        <button class="secondary small" id="logoutButton" hidden>Log out</button>
+      </header>
+
+      <section class="setup-banner" id="setupBanner" hidden>
+        <div><strong>One-time secure connection is still needed</strong><p>The screens are ready, but publishing and private Excel download stay locked until the secure admin service is connected.</p></div>
+        <button class="secondary" data-view-jump="help">View setup guide</button>
+      </section>
+
+      <section class="view active" id="view-overview">
+        <div class="hero-card"><div><span class="pill">ADMIN HOME</span><h2>Your website at a glance</h2><p>Manage the Excel database, simple 4-digit PINs, publishing, and reports from one phone-friendly place.</p></div><button class="primary" data-view-jump="database">Update database</button></div>
+        <div class="stats-grid">
+          <article class="stat"><span>Visitors today</span><strong id="visitorsToday">—</strong><small>Connect analytics to display</small></article>
+          <article class="stat"><span>Anime opens</span><strong id="animeOpens">—</strong><small>Today</small></article>
+          <article class="stat"><span>Play clicks</span><strong id="playClicks">—</strong><small>Today</small></article>
+          <article class="stat"><span>Last website update</span><strong id="lastUpdate">Not connected</strong><small id="deployStatus">Waiting for setup</small></article>
+        </div>
+        <div class="two-column">
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">QUICK ACTIONS</p><h3>What would you like to do?</h3></div></div><div class="quick-grid"><button data-view-jump="pins"><b>＋ Add a PIN</b><span>4 digits, FULL or categories</span></button><button data-view-jump="database"><b>⇧ Upload Excel</b><span>Validate before publishing</span></button><button data-view-jump="analytics"><b>↗ View reports</b><span>Visitors and popular titles</span></button><button data-view-jump="backups"><b>↶ Restore backup</b><span>Return to an older version</span></button></div></article>
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">PUBLISHING</p><h3>Latest activity</h3></div><span class="badge muted">No activity yet</span></div><div class="empty"><span>✓</span><p>Your publish history will appear here after the secure connection is completed.</p></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-pins">
+        <div class="section-intro"><div><h2>Simple PIN Manager</h2><p>Add a 4-digit PIN. Duplicate PINs are allowed. <b>FULL</b> opens every category.</p></div></div>
+        <div class="two-column wide-left">
+          <form class="panel form-card" id="pinForm">
+            <label>4-digit PIN<input id="pinInputAdmin" inputmode="numeric" maxlength="4" placeholder="Example: 1111" required /></label>
+            <fieldset><legend>Access</legend><label class="choice full"><input type="checkbox" id="fullAccess" /><span><b>FULL — all categories</b><small>Choose this when the PIN should open everything.</small></span></label><div id="categoryChoices" class="choice-grid"></div></fieldset>
+            <label>Customer name or note <span>(optional)</span><input id="pinNote" maxlength="80" placeholder="Example: Customer 001" /></label>
+            <div class="preview-box"><span>Customer message preview</span><p id="pinMessagePreview">Your access PIN is ••••.</p><button class="text-button" type="button" id="copyPinMessage">Copy message</button></div>
+            <button class="primary full-width" type="submit">Add PIN &amp; Publish</button>
+            <p class="form-note">The PIN is added to the Excel workbook first, then the website JSON is regenerated.</p>
+          </form>
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">CURRENT PINS</p><h3>Search and manage</h3></div><button class="secondary small" id="refreshPins">Refresh</button></div><input class="search" id="pinSearch" placeholder="Search PIN, category, or note" /><div id="pinList" class="list-state">Connect the secure service to load private Excel PIN data.</div></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-database">
+        <div class="section-intro"><div><h2>Excel Database</h2><p>Download, edit, upload, check the changes, and publish—without opening GitHub.</p></div></div>
+        <div class="process"><span class="done">1 Download</span><i></i><span>2 Edit</span><i></i><span>3 Upload</span><i></i><span>4 Validate</span><i></i><span>5 Publish</span></div>
+        <div class="two-column">
+          <article class="panel action-panel"><div class="action-icon">↓</div><h3>Download current Excel</h3><p>Get the latest private master workbook, including PINs added in the admin.</p><button class="primary" id="downloadExcel">Download Current Excel</button></article>
+          <article class="panel action-panel"><div class="action-icon">⇧</div><h3>Upload updated Excel</h3><p>Select <code>DATABASE_SERVER.xlsx</code> after editing and saving it.</p><label class="file-drop" for="excelUpload"><input type="file" id="excelUpload" accept=".xlsx" /><span id="fileLabel">Tap to choose an Excel file</span><small>Maximum 25 MB · .xlsx only</small></label></article>
+        </div>
+        <article class="panel validation-panel" id="validationPanel"><div class="panel-head"><div><p class="eyebrow">PUBLISH PREVIEW</p><h3>Validation results</h3></div><span class="badge muted" id="validationBadge">No file selected</span></div><div class="checks" id="validationChecks"><p>Choose an Excel file to check required sheets, headers, IDs, PINs, and added/changed/deleted records.</p></div><button class="primary" id="publishExcel" disabled>Publish Website Update</button></article>
+      </section>
+
+      <section class="view" id="view-analytics">
+        <div class="section-intro"><div><h2>Analytics &amp; Reports</h2><p>Anonymous website activity only. Actual PINs, passwords, and full video links are never recorded.</p></div><select aria-label="Date range"><option>Last 7 days</option><option>Last 30 days</option><option>This year</option></select></div>
+        <div class="stats-grid"><article class="stat"><span>Unique visitors</span><strong>—</strong><small>Connect analytics</small></article><article class="stat"><span>Title opens</span><strong>—</strong><small>Connect analytics</small></article><article class="stat"><span>Searches</span><strong>—</strong><small>Connect analytics</small></article><article class="stat"><span>Poster errors</span><strong>—</strong><small>Connect analytics</small></article></div>
+        <div class="two-column"><article class="panel chart-placeholder"><h3>Visitors over time</h3><div><span>Analytics chart</span><small>Appears after connection</small></div></article><article class="panel chart-placeholder"><h3>Visitor → Category → Title → Play</h3><div><span>Conversion funnel</span><small>Appears after connection</small></div></article></div>
+        <article class="panel"><div class="panel-head"><div><p class="eyebrow">POPULAR CONTENT</p><h3>Most opened titles</h3></div><button class="secondary small">Export CSV</button></div><div class="list-state">No analytics data is connected yet.</div></article>
+      </section>
+
+      <section class="view" id="view-backups"><div class="section-intro"><div><h2>Backups &amp; Restore</h2><p>Every published Excel version is kept in GitHub history. Restore only after checking the date and summary.</p></div></div><article class="panel"><div class="panel-head"><div><p class="eyebrow">VERSION HISTORY</p><h3>Previous database versions</h3></div><button class="secondary small">Refresh</button></div><div class="list-state">Connect the secure service to load version history.</div></article></section>
+
+      <section class="view" id="view-help">
+        <div class="section-intro"><div><h2>Beginner Help</h2><p>You will not need to edit code during normal use.</p></div></div>
+        <div class="help-grid"><article class="panel"><span class="step">1</span><h3>Normal database update</h3><ol><li>Download Current Excel.</li><li>Edit it and save as .xlsx.</li><li>Upload it here.</li><li>Read the validation preview.</li><li>Press Publish and wait for success.</li></ol></article><article class="panel"><span class="step">2</span><h3>Add a customer PIN</h3><ol><li>Open PINs.</li><li>Enter exactly 4 digits.</li><li>Choose FULL or categories.</li><li>Press Add PIN &amp; Publish.</li></ol></article><article class="panel"><span class="step">3</span><h3>One-time secure setup</h3><ol><li>Create the secure admin service.</li><li>Save the Admin username/password there—not in Excel.</li><li>Connect your private Excel storage and GitHub website repository.</li><li>Connect analytics.</li></ol></article></div>
+        <article class="panel security-note"><h3>Where is the Admin password saved?</h3><p>Not in Excel and not in public JavaScript. It is saved as a protected secret in the secure admin service. The website ZIP includes a connection checklist in <b>BEGINNER_SETUP.md</b>.</p></article>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="admin-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
